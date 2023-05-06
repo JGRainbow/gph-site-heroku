@@ -61,7 +61,23 @@ We will try to respond to emails or pull requests when we can, but this isn't gu
 
 ## Heroku prod
   - Set environment variable: `heroku config:set -a yourappname DJANGO_SETTINGS_MODULE=gph.settings.prod`.
-  - If you require Redis, you will need to provision an add-on through Heroku. The configuration in this repo assumes you are using [Redis Enterprise Cloud](https://devcenter.heroku.com/articles/rediscloud). If you wish to use a different Redis add-on, go to `gph/settings/base.py` and edit `CACHES` and `CHANNEL_LAYERS` appropriately.
+  - If you require Redis, you will need to provision an add-on through Heroku. The configuration in this repo assumes you are using [Heroku Data for Redis](https://devcenter.heroku.com/articles/heroku-redis). If you wish to use a different Redis add-on, go to `gph/settings/base.py` and edit `CACHES` and `CHANNEL_LAYERS` appropriately.
+
+### Having enough Heroku resources
+  > **Warning**
+  >
+  > PLEASE make sure you have enough dynos, a large enough Postgres, a large enough Redis, and the correct settings!
+  - Heroku imposes limits on the number of database connections; the Essential-tier databases only permit 20 connections. We used Heroku Postrgres' Standard 2.
+  - Similarly, Redis (which is used for Channels) imposes a limit on the number of clients. Strangely enough, if a team can't get a connection to Redis, it can result in everything on the site 500ing. We decided to use Heroku Data for Redis' Premium 5. This might have been slight overkill, but better safe than sorry? 😅
+
+## Bucketeer
+  - You may need to use Heroku's [Bucketeer](https://elements.heroku.com/addons/bucketeer) addon to store static files, if you have many / large static files.
+  - To update your static files, you will need to add `BUCKETEER_AWS_ACCESS_KEY_ID`, `BUCKETEER_AWS_REGION`, `BUCKETEER_AWS_SECRET_ACCESS_KEY`, and `BUCKETEER_BUCKET_NAME` to your `.env`, then run `heroku:local run python3 manage.py collectstatic`.
+  - Uncomment the corresponding settings in `base.py`.
+  - Heroku's `Micro` instance of Bucketeer will be sufficient.
+
+## Admin (Running Team) Discord Integration (optional)
+  - In your `.env`, define a `ALERT_WEBHOOK_URL`, `SUBMISSION_WEBHOOK_URL`, `FREE_ANSWER_WEBHOOK_URL`, `VICTORY_WEBHOOK_URL`, `FAILURE_WEBHOOK_URL`, and `DISCORD_BOT_TOKEN`.
 
 # Areas for Improvement
 

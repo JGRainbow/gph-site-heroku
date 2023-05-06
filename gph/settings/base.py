@@ -25,6 +25,24 @@ os.makedirs(LOGS_DIR, exist_ok=True)
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'FIXME_SECRET_KEY_HERE')
 
+# S3 Bucketeer
+# AWS_ACCESS_KEY_ID = os.environ.get('BUCKETEER_AWS_ACCESS_KEY_ID','')
+# AWS_SECRET_ACCESS_KEY = os.environ.get('BUCKETEER_AWS_SECRET_ACCESS_KEY', '')
+# AWS_STORAGE_BUCKET_NAME = os.environ.get('BUCKETEER_BUCKET_NAME','')
+# AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+# AWS_S3_OBJECT_PARAMETERS = {
+#     'CacheControl': 'max-age=86400',
+# }
+# AWS_LOCATION = 'public/static'
+
+# Admin (running team) Discord integration
+# ALERT_WEBHOOK_URL = os.environ.get('ALERT_WEBHOOK_URL','')
+# SUBMISSION_WEBHOOK_URL = os.environ.get('SUBMISSION_WEBHOOK_URL','')
+# FREE_ANSWER_WEBHOOK_URL = os.environ.get('FREE_ANSWER_WEBHOOK_URL','')
+# VICTORY_WEBHOOK_URL = os.environ.get('VICTORY_WEBHOOK_URL','')
+# FAILURE_WEBHOOK_URL = os.environ.get('FAILURE_WEBHOOK_URL','')
+# DISCORD_BOT_TOKEN = os.environ.get('DISCORD_BOT_TOKEN','')
+
 RECAPTCHA_SITEKEY = None
 RECAPTCHA_SECRETKEY = None
 
@@ -66,7 +84,7 @@ MIDDLEWARE = [
     'puzzles.views.accept_ranges_middleware',
 ]
 
-redis_url = os.environ.get('REDISCLOUD_URL')
+redis_url = os.environ.get('REDIS_URL')
 
 CACHES = {
     "default": {
@@ -74,15 +92,26 @@ CACHES = {
         "LOCATION": redis_url,
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            'CONNECTION_POOL_KWARGS': {
+                'ssl_cert_reqs': None
+            },
         },
     }
+}
+
+ssl_context = ssl.SSLContext()
+ssl_context.check_hostname = False
+ssl_context.verify_mode = ssl.CERT_NONE
+heroku_redis_ssl_host = {
+    'address':redis_url,
+    'ssl': ssl_context
 }
 
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [{'address': redis_url}],
+            "hosts": (heroku_redis_ssl_host,)
         },
     }
 }
