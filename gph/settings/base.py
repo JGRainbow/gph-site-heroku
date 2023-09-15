@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 '''
 
 import os, sys
+import ssl
 import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -146,8 +147,18 @@ ASGI_APPLICATION = 'gph.asgi.application'
 
 # Apparently conn_max_age=0 is better for Heroku:
 # https://stackoverflow.com/questions/48644208/django-postgresql-heroku-operational-error-fatal-too-many-connections-for-r
+# DATABASES = {
+#     'default': dj_database_url.config(conn_max_age=0, ssl_require=True),
+# }
 DATABASES = {
-    'default': dj_database_url.config(conn_max_age=0, ssl_require=True),
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'gph',
+        'USER': 'jacobrainbow',
+        'PASSWORD': 'test',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
@@ -225,7 +236,7 @@ LOGGING = {
     },
     # FIXME you may want to change the filenames to something like
     # /srv/logs/django.log or similar
-    handlers': {
+    'handlers': {
         'django': {
             'level': 'INFO',
             'class': 'logging.StreamHandler',
