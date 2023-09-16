@@ -156,8 +156,8 @@ DATABASES = {
         'NAME': 'gph',
         'USER': 'jacobrainbow',
         'PASSWORD': 'test',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        # 'HOST': 'localhost',
+        # 'PORT': '5432',
     }
 }
 
