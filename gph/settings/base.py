@@ -150,13 +150,26 @@ ASGI_APPLICATION = 'gph.asgi.application'
 # DATABASES = {
 #     'default': dj_database_url.config(conn_max_age=0, ssl_require=True),
 # }
+# LOCAL DATABASE SETTINGS
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'gph',
+#         'USER': 'jacobrainbow',
+#         'PASSWORD': 'test',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
+
+# CLOUD DATABASE SETTINGS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'gph',
-        'USER': 'jacobrainbow',
-        'PASSWORD': 'test',
-        'HOST': 'localhost',
+        'NAME': 'dcq49ipe4g98kd',
+        'USER': 'fqvqdqmgeggofq',
+        'PASSWORD': '50405005308eb6a0186d7d89fee482f0dcac5c2b62f95d4886a339b4a0c334c3',
+        'HOST': 'ec2-34-250-252-161.eu-west-1.compute.amazonaws.com',
         'PORT': '5432',
     }
 }
