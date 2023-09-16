@@ -147,6 +147,7 @@ ASGI_APPLICATION = 'gph.asgi.application'
 
 # Apparently conn_max_age=0 is better for Heroku:
 # https://stackoverflow.com/questions/48644208/django-postgresql-heroku-operational-error-fatal-too-many-connections-for-r
+
 # DATABASES = {
 #     'default': dj_database_url.config(conn_max_age=0, ssl_require=True),
 # }
